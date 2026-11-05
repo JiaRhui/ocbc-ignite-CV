@@ -31,7 +31,7 @@ function Highlighted({ text, result }: { text: string; result: AnalysisResult })
   const re = new RegExp(`(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).sort((a, b) => b.length - a.length).join("|")})`, "gi");
   return (
     <p className="whitespace-pre-wrap leading-relaxed">
-      {text.split(re).map((part, i) => re.test(part) && (re.lastIndex = 0) === 0
+      {text.split(re).map((part, i) => i % 2 === 1
         ? <mark key={i} className="rounded bg-danger-soft px-0.5 font-medium text-critical underline decoration-danger decoration-2 underline-offset-2">{part}</mark>
         : <span key={i}>{part}</span>)}
     </p>
