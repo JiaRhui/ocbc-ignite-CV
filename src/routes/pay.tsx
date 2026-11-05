@@ -41,7 +41,7 @@ function Pay() {
   const [caseId, setCaseId] = useState<string | null>(null);
   const [recentFlagged, setRecent] = useState(false);
   const [trusted, setTrusted] = useState(false);
-  const payee = MOCK_PAYEES[payeeIdx];
+  const payee = MOCK_PAYEES[payeeIdx] ?? MOCK_PAYEES[0]!;
 
   useEffect(() => { try { const t = +(localStorage.getItem("tg-recent-flag") || 0); setRecent(Date.now() - t < 86400000); } catch { /* ignore */ } }, []);
 

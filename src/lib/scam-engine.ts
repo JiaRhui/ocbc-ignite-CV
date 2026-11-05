@@ -14,9 +14,9 @@ export interface Signal {
 export interface AnalysisInput {
   text: string;
   channel: Channel;
-  claimedSender?: string;
-  senderId?: string;
-  callCues?: string[]; // ids from CALL_CUES
+  claimedSender?: string | undefined;
+  senderId?: string | undefined;
+  callCues?: string[] | undefined; // ids from CALL_CUES
 }
 
 export interface AnalysisResult {
@@ -74,17 +74,19 @@ export const CALL_CUES = [
 ];
 
 function lev(a: string, b: string): number {
-  const dp = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
-  for (let j = 1; j <= b.length; j++) dp[0][j] = j;
-  for (let i = 1; i <= a.length; i++)
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
     for (let j = 1; j <= b.length; j++)
-      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-  return dp[a.length][b.length];
+      cur[j] = Math.min((prev[j] ?? 0) + 1, (cur[j - 1] ?? 0) + 1, (prev[j - 1] ?? 0) + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length] ?? 0;
 }
 
 export function checkUrl(raw: string): UrlFinding {
   const url = raw.replace(/[).,!?]+$/, "");
-  let host = url.replace(/^https?:\/\//i, "").split(/[/?#:]/)[0].toLowerCase();
+  let host = url.replace(/^https?:\/\//i, "").split(/[/?#:]/)[0]!.toLowerCase();
   if (host.startsWith("www.")) host = host.slice(4);
   if (OFFICIAL_DOMAINS.some((d) => host === d || host.endsWith("." + d)))
     return { url, host, verdict: "official", reason: "Matches an official domain." };
