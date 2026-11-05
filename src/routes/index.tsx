@@ -82,7 +82,7 @@ function Index() {
             <p className="mt-5 max-w-lg text-lg text-ink-foreground/75">AI can fake a bank's SMS, a police officer's voice or your child's face. TrustGuard adds a moment of friction exactly when rushing would cost you.</p>
           </div>
           <div className="grid grid-cols-2 gap-3 self-end">
-            {[["1", "Scam Check", "Explain warning signs in any message or call", "/"], ["2", "Pause & Verify", "Smart cooling-off before risky transfers", "/pay"], ["3", "Verify a Caller", "Confirm a 'bank officer' inside the app", "/verify"], ["4", "Officer Console", "Triage reports with sealed evidence", "/triage"]].map(([n, t, d, to]) => (
+            {([["1", "Scam Check", "Explain warning signs in any message or call", "/"], ["2", "Pause & Verify", "Smart cooling-off before risky transfers", "/pay"], ["3", "Verify a Caller", "Confirm a 'bank officer' inside the app", "/verify"], ["4", "Officer Console", "Triage reports with sealed evidence", "/triage"]] as const).map(([n, t, d, to]) => (
               <Link key={n} to={to} className="group rounded-xl border border-ink-foreground/15 bg-ink-foreground/5 p-4 transition hover:border-primary hover:bg-ink-foreground/10">
                 <div className="font-mono text-xs text-primary">0{n}</div>
                 <div className="mt-1 font-display font-semibold">{t}</div>

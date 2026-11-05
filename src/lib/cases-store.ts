@@ -56,7 +56,7 @@ export async function hashEvidence(text: string) {
 
 export async function createCase(c: Omit<ScamCase, "id" | "createdAt" | "evidenceHash" | "status" | "audit"> & { actor?: string; note: string }) {
   load();
-  const n = Math.max(1042, ...state.map((x) => +x.id.split("-")[1] || 0)) + 1;
+  const n = Math.max(1042, ...state.map((x) => +(x.id.split("-")[1] ?? 0) || 0)) + 1;
   const now = new Date().toISOString();
   const { actor, note, ...rest } = c;
   const created: ScamCase = { ...rest, id: `TC-${n}`, createdAt: now, evidenceHash: await hashEvidence(c.evidence + now), status: "new", audit: [{ at: now, actor: actor || "Customer", action: note }] };
